@@ -1,23 +1,20 @@
-import logo from './logo.svg';
+import NavBar from './Components/NavBar/Navbar';
 import './App.css';
+import { Outlet } from 'react-router-dom';
 
 function App() {
   return (
     <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
+      <header className=''>
+        <NavBar/>
       </header>
+      <main className=' overflow-hidden md:'>
+        <div className='md:mt-[60px] mt-[88px]'>
+        <Outlet/>
+        </div>
+      </main>
+
+      <div>Footer</div>
     </div>
   );
 }
