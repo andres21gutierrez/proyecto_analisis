@@ -30,7 +30,7 @@ export default function NavBar(){
                     <div className="hover:scale-110 scale-100"><Link onClick={clicked ? redictClose : redict} to="/">Inicio</Link></div>
                     <div className="hover:scale-110 scale-100"><Link onClick={clicked ? redictClose : redict} to="/perfil">Perfil</Link></div>
                     <div className="hover:scale-110 scale-100"><Link onClick={clicked ? redictClose : redict} to="/eventos">Eventos</Link></div>
-                    <div className="hover:scale-110 scale-100"><Link onClick={clicked ? redictClose : redict} >Contacto</Link></div>
+                    <div className="hover:scale-110 scale-100"><Link onClick={clicked ? redictClose : redict} to="/contacto">Contacto</Link></div>
                 </div>
                 <div className="burguer">
                     <BurguerButton clicked = {clicked} handleClick={handleClick}/>
@@ -48,7 +48,7 @@ const BgDiv = styled.div`
         top: 0;
         right: 0;
         width: 100%;
-        height: 100%;
+        height: 70%;
         z-index: -1;
     }
 `
@@ -96,8 +96,8 @@ a{
     position: fixed;
     margin-left: auto;
     margin-right: auto;
-    top: 30%;
-    left: 0;
+    top: 15%;
+    left: 2.5rem;
     right: 0;
     text-align: center;
     color: #333;
