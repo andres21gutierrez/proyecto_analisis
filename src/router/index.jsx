@@ -3,7 +3,7 @@ import Home from "../views/Home/Home";
 import Events from "../views/Events/Events";
 import App from '../App';
 import Stadium from "../Components/Stadium/Stadium";
-
+import CreateEvent from "../views/crateEvent/creatEvent";
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -19,7 +19,7 @@ export const router = createBrowserRouter([
             },
             {
                 path:'perfil',
-                element: <Stadium/>
+                element: <CreateEvent/>
             },
             {
                 path:'contacto',
