@@ -3,7 +3,9 @@ import Home from "../views/Home/Home";
 import Events from "../views/Events/Events";
 import App from '../App';
 import Stadium from "../Components/Stadium/Stadium";
+import Perfil from "../views/Perfil/Perfil";
 import CreateEvent from "../views/crateEvent/creatEvent";
+
 export const router = createBrowserRouter([
     {
         path: '/',
@@ -19,11 +21,11 @@ export const router = createBrowserRouter([
             },
             {
                 path:'perfil',
-                element: <CreateEvent/>
+                element: <Perfil/>
             },
             {
                 path:'contacto',
-                element: <Stadium/>
+                element: <CreateEvent/>
             }
         ]
     }

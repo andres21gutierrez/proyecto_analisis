@@ -1,6 +1,15 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 
+const MainContainer = styled.div`
+  background: linear-gradient(to right, #001f3f, #8b0000); /* Fondo degradado azul a rojo */
+  color: #000000; /* Cambiar el color del texto a negro */
+  min-height: 100vh; /* Altura mínima del 100% del viewport */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+`;
+
 const FormContainer = styled.div`
   max-width: 600px;
   margin: 0 auto;
@@ -33,6 +42,7 @@ const FormTextarea = styled.textarea`
   border-radius: 4px;
   box-sizing: border-box;
 `;
+
 const FormSelect = styled.select`
   width: 100%;
   padding: 8px;
@@ -41,6 +51,7 @@ const FormSelect = styled.select`
   border-radius: 4px;
   box-sizing: border-box;
 `;
+
 const FormOption = styled.option`
   // Puedes aplicar estilos adicionales según sea necesario
 `;
@@ -108,82 +119,84 @@ const CreateEvent = ({ onCreateEvent }) => {
   };
 
   return (
-    <FormContainer>
-      <h2>Crear Nuevo Evento</h2>
-      <form onSubmit={handleSubmit}>
-        <FormLabel>Tipo de Evento:</FormLabel>
-        <FormSelect
-          name="tipo"
-          value={eventData.tipo}
-          onChange={handleTipoChange}
-          required
-        >
-          <FormOption value="partido">Partido</FormOption>
-          <FormOption value="concierto">Concierto</FormOption>
-          <FormOption value="otros">Otros</FormOption>
-        </FormSelect>
+    <MainContainer>
+      <FormContainer>
+        <h2>Crear Nuevo Evento</h2>
+        <form onSubmit={handleSubmit}>
+          <FormLabel>Tipo de Evento:</FormLabel>
+          <FormSelect
+            name="tipo"
+            value={eventData.tipo}
+            onChange={handleTipoChange}
+            required
+          >
+            <FormOption value="partido">Partido</FormOption>
+            <FormOption value="concierto">Concierto</FormOption>
+            <FormOption value="otros">Otros</FormOption>
+          </FormSelect>
 
-        {/* Si se selecciona "Otros", mostrar una entrada de texto para el tipo de evento personalizado */}
-        {eventData.tipo === "otros" && (
-          <div>
-            <FormLabel>...</FormLabel>
-            <FormInput
-              type="text"
-              name="tipoEventoPersonalizado"
-              value={eventData.tipoEventoPersonalizado}
-              onChange={handleTipoPersonalizadoChange}
-              required
-            />
-          </div>
-        )}
+          {/* Si se selecciona "Otros", mostrar una entrada de texto para el tipo de evento personalizado */}
+          {eventData.tipo === "otros" && (
+            <div>
+              <FormLabel>...</FormLabel>
+              <FormInput
+                type="text"
+                name="tipoEventoPersonalizado"
+                value={eventData.tipoEventoPersonalizado}
+                onChange={handleTipoPersonalizadoChange}
+                required
+              />
+            </div>
+          )}
 
-        <FormLabel>Nombre del Evento:</FormLabel>
-        <FormInput
-          type="text"
-          name="nombre"
-          value={eventData.nombre}
-          onChange={handleChange}
-          required
-        />
+          <FormLabel>Nombre del Evento:</FormLabel>
+          <FormInput
+            type="text"
+            name="nombre"
+            value={eventData.nombre}
+            onChange={handleChange}
+            required
+          />
 
-        <FormLabel>Fecha:</FormLabel>
-        <FormInput
-          type="date"
-          name="fecha"
-          value={eventData.fecha}
-          onChange={handleChange}
-          required
-        />
+          <FormLabel>Fecha:</FormLabel>
+          <FormInput
+            type="date"
+            name="fecha"
+            value={eventData.fecha}
+            onChange={handleChange}
+            required
+          />
 
-        <FormLabel>Hora:</FormLabel>
-        <FormInput
-          type="time"
-          name="hora"
-          value={eventData.hora}
-          onChange={handleChange}
-          required
-        />
+          <FormLabel>Hora:</FormLabel>
+          <FormInput
+            type="time"
+            name="hora"
+            value={eventData.hora}
+            onChange={handleChange}
+            required
+          />
 
-        <FormLabel>Descripción:</FormLabel>
-        <FormTextarea
-          name="descripcion"
-          value={eventData.descripcion}
-          onChange={handleChange}
-          required
-        />
+          <FormLabel>Descripción:</FormLabel>
+          <FormTextarea
+            name="descripcion"
+            value={eventData.descripcion}
+            onChange={handleChange}
+            required
+          />
 
-        <FormLabel>URL de la Imagen:</FormLabel>
-        <FormInput
-          type="url"
-          name="imagenUrl"
-          value={eventData.imagenUrl}
-          onChange={handleChange}
-          required
-        />
+          <FormLabel>URL de la Imagen:</FormLabel>
+          <FormInput
+            type="url"
+            name="imagenUrl"
+            value={eventData.imagenUrl}
+            onChange={handleChange}
+            required
+          />
 
-        <FormButton type="submit">Crear Evento</FormButton>
-      </form>
-    </FormContainer>
+          <FormButton type="submit">Crear Evento</FormButton>
+        </form>
+      </FormContainer>
+    </MainContainer>
   );
 };
 
