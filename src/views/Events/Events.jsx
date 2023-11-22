@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import EventImage from '../../Components/EventImage/EventImage'
 import EventInfoCard from "../../Components/EventInformation/EventInformation";
 import styled, { createGlobalStyle } from "styled-components";
-import Stadium from "../../Components/Stadium/Stadium";
 
 const GlobalStyle = createGlobalStyle`
   body {
@@ -32,7 +31,8 @@ const ToggleButton = styled.button`
 
 const EventContainer = styled.div`
   width: ${({ showEvents }) => (showEvents ? "100%" : "0")};
-  height: 125%;
+  min-height: 115%;
+  height: auto;
   overflow: hidden;
   transition: width 0.5s;
   display: flex;
@@ -63,6 +63,7 @@ const ContentWrapper = styled.div`
 
 const eventData = [
     {
+      codigoEvento: '1CARD',
       tipo: "Concierto",
       nombre: "Concierto en Vivo",
       fecha: "2023-12-31",
@@ -71,6 +72,7 @@ const eventData = [
       imagenUrl: "https://i.ibb.co/pvkWCbL/music-concert-poster-template-design-7aac74443adef25b155da04ea1338157-screen.jpg",
     },
     {
+      codigoEvento: '2CARD',
       tipo: "Partido",
       nombre: "International Friendly",
       fecha: "2023-12-15",
@@ -79,6 +81,7 @@ const eventData = [
       imagenUrl: "https://i.ibb.co/SfLVr21/ecuador-vs-bolivia-friendly-800x1280fit.jpg",
     },
     {
+      codigoEvento: '3CARD',
       tipo: "Partido",
       nombre: "Amistoso internacional",
       fecha: "2023-12-15",
@@ -88,6 +91,7 @@ const eventData = [
     },
     // Tres eventos adicionales
     {
+      codigoEvento: '4CARD',
       tipo: "Concierto",
       nombre: "Noche de Jazz",
       fecha: "2023-11-20",
@@ -96,6 +100,7 @@ const eventData = [
       imagenUrl: "https://www.brande.es/wp-content/uploads/2018/11/23nov-noche-de-jazz-flyer.jpg",
     },
     {
+      codigoEvento: '5CARD',
       tipo: "Partido",
       nombre: "Copa Internacional",
       fecha: "2023-11-25",
@@ -104,6 +109,7 @@ const eventData = [
       imagenUrl: "https://pbs.twimg.com/media/FYhwToMXkAAsA8x?format=jpg&name=900x900",
     },
     {
+      codigoEvento: '6CARD',
       tipo: "Conferencia",
       nombre: "Conferencia Tecnológica",
       fecha: "2023-12-05",
@@ -112,7 +118,7 @@ const eventData = [
       imagenUrl: "https://unjfsc.edu.pe/wp-content/uploads/2022/11/314885297_5956427624376857_6458328205588602632_n.jpg",
     },
   ];
-  
+
 
 export default function Events() {
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
