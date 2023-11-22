@@ -1,14 +1,58 @@
-export default function Stadium(){
+export default function Stadium(props){
+  const sectores = [
+    {
+      "codigoSector": "CS1",
+      "nombre": "Curva Sur",
+      "capacidadMaxima": 1000,
+      "cantidadOcupantes": 500,
+      "precioSector": 20.0,
+      "codigoEvento": "EVT1",
+      "habilitado": false,
+      "posicionDefecto": "curvaSur"
+    },
+    {
+      "codigoSector": "CN1",
+      "nombre": "Curva Norte",
+      "capacidadMaxima": 1200,
+      "cantidadOcupantes": 600,
+      "precioSector": 25.0,
+      "codigoEvento": "EVT1",
+      "habilitado": false,
+      "posicionDefecto": "curvaNorte"
+    },
+    {
+      "codigoSector": "PR1",
+      "nombre": "Preferencial",
+      "capacidadMaxima": 500,
+      "cantidadOcupantes": 200,
+      "precioSector": 50.0,
+      "codigoEvento": "EVT1",
+      "habilitado": false,
+      "posicionDefecto": "preferencial"
+    },
+    {
+      "codigoSector": "GN1",
+      "nombre": "General",
+      "capacidadMaxima": 1500,
+      "cantidadOcupantes": 800,
+      "precioSector": 15.0,
+      "codigoEvento": "EVT1",
+      "habilitado": false,
+      "posicionDefecto": "general"
+    }
+  ]
+
+
     return(
         <div className="flex py-5 justify-center">
             <div className="flex">
-                <CurvaSur></CurvaSur>
+                {sectores.find(sector => sector.posicionDefecto === "curvaSur").habilitado === true ? <CurvaSur/> : <CurvaSur disp={true}/>}
                 <div className="px-2">
-                    <GeneralA></GeneralA>
-                    <Cesped></Cesped>
-                    <GeneralB></GeneralB>
+                  {sectores.find(sector => sector.posicionDefecto === "general").habilitado === true ? <General/> :  <General disp={true}/>}
+                  <Cesped></Cesped>
+                  {sectores.find(sector => sector.posicionDefecto === "preferencial").habilitado === true ? <Preferencial/> : <Preferencial disp={true}/>}
                 </div>
-                <CurvaNorte></CurvaNorte>
+                {sectores.find(sector => sector.posicionDefecto === "curvaNorte").habilitado === true ? <CurvaNorte/> : <CurvaNorte disp={true}/>}
             </div>            
         </div>
     )
@@ -35,42 +79,42 @@ const Cesped = () => {
     );
   };
 
-const GeneralA = (numAsientos, habilitado)=>{
+const General = (props)=>{
     return(
-        <div className="md:w-[512px] w-[300px] mx-auto">
+        <button disabled={props.disp === true} className={`md:w-[512px] w-[300px] mx-auto ${ props.disp === true ? `opacity-25` : ``}`}>
             <div className="max-w-lg mb-4">
                 <div className="h-20 border-2 border-black overflow-hidden flex items-center justify-center">
-                    GENERAL A
+                    GENERAL
                 </div>
             </div>
-        </div>
+        </button>
     )
 }
 
-const GeneralB = (numAsientos, habilitado)=>{
+const Preferencial = (props)=>{
     return(
-        <div className="md:w-[512px] w-[300px] mx-auto">
+        <button className={`md:w-[512px] w-[300px] mx-auto ${ props.disp == true ? `opacity-25` : ``}`} disabled={props.disp === true}>
             <div className="max-w-lg mt-4">
-                <div className="h-20 border-2 border-black overflow-hidden flex items-center justify-center">
-                    GENERAL B
+                <div className={"h-20 border-2 border-black overflow-hidden flex items-center justify-center"}>
+                    PREFERENCIAL
                 </div>
             </div>
-        </div>
+        </button>
     )
 }
 
-const CurvaSur = (numAsientos, habilitado)=>{
+const CurvaSur = (props)=>{
     return(
-        <div className="md:h-[510px] rounded-l-full h-[180px] w-[100px] border-2 border-black flex items-center justify-center">
+        <button disabled={props.disp === true} className={`md:h-[510px] h-[375px] rounded-l-full w-[100px] border-2 border-black flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
             SUR
-        </div>
+        </button>
     )
 }
 
-const CurvaNorte = (numAsientos, habilitado)=>{
+const CurvaNorte = (props)=>{
     return(
-        <div className="md:h-[510px] h-[180px] rounded-r-full w-[100px] border-2 border-black flex items-center justify-center">
+        <button disabled={props.disp === true} className={`md:h-[510px] h-[375px] rounded-r-full w-[100px] border-2 border-black flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
             NORTE
-        </div>
+        </button>
     )
 }

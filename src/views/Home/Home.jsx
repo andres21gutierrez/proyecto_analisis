@@ -4,13 +4,18 @@ import styled, { keyframes } from "styled-components";
 const BgTransform = styled.div`
   background: linear-gradient(to right, #001f3f, #8b0000);
   width: 100vw;
-  height: 300vh;
+
+  height: auto;
+
   color: white;
   display: flex;
   align-items: center;
   justify-content: center;
   flex-direction: column;
   padding-top: 40px;
+
+  padding-bottom: 40px;
+
   margin-top: -30px; /* Ajusté el margen superior */
 `;
 
