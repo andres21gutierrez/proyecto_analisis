@@ -7,7 +7,7 @@ export default function Stadium(props){
       "cantidadOcupantes": 500,
       "precioSector": 20.0,
       "codigoEvento": "EVT1",
-      "habilitado": false,
+      "habilitado": true,
       "posicionDefecto": "curvaSur"
     },
     {
@@ -17,7 +17,7 @@ export default function Stadium(props){
       "cantidadOcupantes": 600,
       "precioSector": 25.0,
       "codigoEvento": "EVT1",
-      "habilitado": false,
+      "habilitado": true,
       "posicionDefecto": "curvaNorte"
     },
     {
@@ -27,7 +27,7 @@ export default function Stadium(props){
       "cantidadOcupantes": 200,
       "precioSector": 50.0,
       "codigoEvento": "EVT1",
-      "habilitado": false,
+      "habilitado": true,
       "posicionDefecto": "preferencial"
     },
     {
@@ -37,7 +37,7 @@ export default function Stadium(props){
       "cantidadOcupantes": 800,
       "precioSector": 15.0,
       "codigoEvento": "EVT1",
-      "habilitado": false,
+      "habilitado": true,
       "posicionDefecto": "general"
     }
   ]
@@ -61,7 +61,7 @@ export default function Stadium(props){
 // CENTRO DEL STADIUM
 const Cesped = () => {
     return (
-      <div className="relative md:w-[512px] w-[300px] mx-auto px-2">
+      <div className="relative md:w-[512px] w-[240px] mx-auto px-2">
         <div className="rounded-lg max-w-lg bg-green-500 p-4">
           <div className="relative md:h-72 h-[150px] bg-green-500 rounded-lg overflow-hidden">
             <div className="absolute bottom-1/4 right-0 translate-x-1/2 transform border-[3px] border-white w-1/4 h-1/2" />
@@ -81,9 +81,9 @@ const Cesped = () => {
 
 const General = (props)=>{
     return(
-        <button disabled={props.disp === true} className={`md:w-[512px] w-[300px] mx-auto ${ props.disp === true ? `opacity-25` : ``}`}>
+        <button disabled={props.disp === true} className={`md:w-[512px] w-[230px] mx-auto ${ props.disp === true ? `opacity-25` : ``}`}>
             <div className="max-w-lg mb-4">
-                <div className="h-20 border-2 border-black overflow-hidden flex items-center justify-center">
+                <div className="md:h-20 h-10 border-2 border-black overflow-hidden flex items-center justify-center">
                     GENERAL
                 </div>
             </div>
@@ -93,9 +93,9 @@ const General = (props)=>{
 
 const Preferencial = (props)=>{
     return(
-        <button className={`md:w-[512px] w-[300px] mx-auto ${ props.disp == true ? `opacity-25` : ``}`} disabled={props.disp === true}>
+        <button className={`md:w-[512px] w-[230px] mx-auto ${ props.disp == true ? `opacity-25` : ``}`} disabled={props.disp === true}>
             <div className="max-w-lg mt-4">
-                <div className={"h-20 border-2 border-black overflow-hidden flex items-center justify-center"}>
+                <div className={"md:h-20 h-10 border-2 border-black overflow-hidden flex items-center justify-center"}>
                     PREFERENCIAL
                 </div>
             </div>
@@ -105,16 +105,16 @@ const Preferencial = (props)=>{
 
 const CurvaSur = (props)=>{
     return(
-        <button disabled={props.disp === true} className={`md:h-[510px] h-[375px] rounded-l-full w-[100px] border-2 border-black flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
-            SUR
+        <button disabled={props.disp === true} className={`md:h-[510px] h-[290px] rounded-l-full md:w-[100px] w-[50px] border-2 border-black flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
+          <span className="transform md:-rotate-0 -rotate-90">SUR</span>
         </button>
     )
 }
 
 const CurvaNorte = (props)=>{
     return(
-        <button disabled={props.disp === true} className={`md:h-[510px] h-[375px] rounded-r-full w-[100px] border-2 border-black flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
-            NORTE
+        <button disabled={props.disp === true} className={`md:h-[510px] h-[290px] rounded-r-full md:w-[100px] w-[50px]  border-2 border-black flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
+            <span className="transform md:-rotate-0 -rotate-90">NORTE</span>
         </button>
     )
 }

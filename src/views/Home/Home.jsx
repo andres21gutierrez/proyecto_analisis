@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import styled, { keyframes } from "styled-components";
 
 const BgTransform = styled.div`
@@ -121,6 +121,22 @@ const VerMasButton = styled.a`
 `;
 
 export default function Home() {
+
+  useEffect(() => {
+    // Puedes ejecutar cualquier código adicional aquí si es necesario.
+
+    // Después de que el componente se haya montado, puedes ejecutar la lógica para activar el autoplay.
+    const iframe = document.querySelector('iframe');
+    if (iframe) {
+      iframe.setAttribute('autoplay', '1');
+    }
+
+    // Puedes limpiar o realizar otras acciones cuando el componente se desmonte.
+    return () => {
+      // Código de limpieza si es necesario.
+    };
+  }, []);
+
   return (
     <BgTransform>
       <Title>¡Bienvenido al Estadio Félix Capriles!</Title>

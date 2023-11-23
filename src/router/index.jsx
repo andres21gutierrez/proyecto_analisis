@@ -2,9 +2,8 @@ import { createBrowserRouter } from "react-router-dom";
 import Home from "../views/Home/Home";
 import Events from "../views/Events/Events";
 import App from '../App';
-import Stadium from "../Components/Stadium/Stadium";
-import Perfil from "../views/Perfil/Perfil";
-import CreateEvent from "../views/crateEvent/creatEvent";
+import ValidateSession from "../views/ValidateSession/ValidateSession";
+import Contacts from '../views/Contacts/Contactanos';
 
 export const router = createBrowserRouter([
     {
@@ -21,11 +20,11 @@ export const router = createBrowserRouter([
             },
             {
                 path:'perfil',
-                element: <Perfil/>
+                element: <ValidateSession/>
             },
             {
                 path:'contacto',
-                element: <CreateEvent/>
+                element: <Contacts/>
             }
         ]
     }
