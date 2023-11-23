@@ -118,21 +118,21 @@ export default function EventInfoCard({ codigoEvento, tipoEvento, nombreEvento, 
     <CardContainer>
       <CardHeader>Detalles del Evento</CardHeader>
       <CardBody>
-        {imgURL && <Image src={imgURL} alt={`Imagen de ${nombreEvento}`} />}
+        {imgURL && <Image src={imgURL} alt={`Imagen de ${nombre}`} />}
         <InfoField>
-          <strong>Tipo de Evento:</strong> {tipoEvento}
+          <strong>Tipo de Evento:</strong> {tipo}
         </InfoField>
         <InfoField>
-          <strong>Nombre del Evento:</strong> {nombreEvento}
+          <strong>Nombre del Evento:</strong> {nombre}
         </InfoField>
         <InfoField>
-          <strong>Fecha:</strong> {fechaEvento}
+          <strong>Fecha:</strong> {fecha}
         </InfoField>
         <InfoField>
           <strong>Hora:</strong> {hora}
         </InfoField>
         <InfoField>
-          <strong>Descripción:</strong> {descripcionEvento}
+          <strong>Descripción:</strong> {descripcion}
         </InfoField>
 
         <div className="w-full flex justify-center text-white">
