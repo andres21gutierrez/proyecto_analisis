@@ -1,6 +1,8 @@
 import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const LoginForm = () => {
+  const navigate = useNavigate()
   const [showPassword, setShowPassword] = useState(false);
   const [data, setData] = useState({
     usuario: '',
@@ -17,13 +19,13 @@ const LoginForm = () => {
 
   const makeLogin = async () => {
     try {
-      const response = await fetch('http://127.0.0.1:5000/api/login', {
+      const response = await fetch('http://146.190.214.220:5000/api/login', {
         method: 'POST',
         headers: { 'Content-Type': "application/json" },
         body: JSON.stringify(data)
       })
       const json = await response.json()
-      // console.log(json)
+      localStorage.setItem('token', json['token'])
       setSession(json)
     }
     catch (error) {
@@ -41,6 +43,7 @@ const LoginForm = () => {
 
     await makeLogin()
     console.log(session)
+    navigate("/perfil")
   };
 
 

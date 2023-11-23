@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
 import Login from '../Login/Login';
 
@@ -92,6 +92,7 @@ const ProfileData = () => {
     usuario: "juancito",
     password: "********",
   });
+  const [loading, setLoading] = useState(true)
 
   const [purchaseHistory, setPurchaseHistory] = useState([
     {
@@ -105,6 +106,53 @@ const ProfileData = () => {
     },
     // Agrega más datos según sea necesario
   ]);
+
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        // Obtener token del localStorage
+        const token = localStorage.getItem('token');
+
+        // Verificar que haya un token
+        if (!token) {
+          console.error("No se encontró un token en el localStorage.");
+          setLoading(false);
+          return;
+        }
+
+        // Decodificar el token para obtener el campo "carnet"
+        const decodedToken = JSON.parse(atob(token.split('.')[1]));
+        console.log(decodedToken)
+        const carnet = decodedToken.carnet;
+
+        // Construir la URL con el carnet
+        const url = `http://146.190.214.220:5000/api/usuario/${carnet}`;
+
+        // Realizar la solicitud al backend
+        const response = await fetch(url);
+        const data = await response.json();
+
+        // Actualizar el estado con los datos obtenidos
+        setUserData({
+          firstName: data.nombre,
+          lastName: data.apellido,
+          codigoCliente: data.codigoUsuario,
+          carnet: data.carnet,
+          email: data.email,
+          usuario: data.usuario,
+          password: data.password,
+        });
+
+        setLoading(false); // Marcar que la carga ha terminado
+      } catch (error) {
+        console.error("Error al obtener datos del backend:", error);
+        setLoading(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
 
   const [showChangePasswordForm, setShowChangePasswordForm] = useState(false);
   const [currentPassword, setCurrentPassword] = useState("");
@@ -135,85 +183,89 @@ const ProfileData = () => {
 
   return (
     <UserDataContainer>
-      <Title>Datos de Perfil</Title>
-      <p>
-        <strong>Nombre:</strong> {userData.firstName}
-      </p>
-      <p>
-        <strong>Apellido:</strong> {userData.lastName}
-      </p>
-      <p>
-        <strong>Código de Cliente:</strong> {userData.codigoCliente}
-      </p>
-      <p>
-        <strong>Carnet:</strong> {userData.carnet}
-      </p>
-      <p>
-        <strong>Email:</strong> {userData.email}
-      </p>
-      <p>
-        <strong>Usuario:</strong> {userData.usuario}
-      </p>
-      <p>
-        <strong>Contraseña:</strong> {showPassword ? userData.password : "********"}
-      </p>
-      <ChangePasswordButton onClick={handleChangePassword}>
-        Cambiar Contraseña
-      </ChangePasswordButton>
-      <PurchaseHistoryButton onClick={viewPurchaseHistory}>
-        Historial de Compras
-      </PurchaseHistoryButton>
+      {loading ? (<p> Cargando datos...</p>) : (
+        <>
+          <Title>Datos de Perfil</Title>
+          <p>
+            <strong>Nombre:</strong> {userData.firstName}
+          </p>
+          <p>
+            <strong>Apellido:</strong> {userData.lastName}
+          </p>
+          <p>
+            <strong>Código de Cliente:</strong> {userData.codigoCliente}
+          </p>
+          <p>
+            <strong>Carnet:</strong> {userData.carnet}
+          </p>
+          <p>
+            <strong>Email:</strong> {userData.email}
+          </p>
+          <p>
+            <strong>Usuario:</strong> {userData.usuario}
+          </p>
+          <p>
+            <strong>Contraseña:</strong> {showPassword ? userData.password : "********"}
+          </p>
+          <ChangePasswordButton onClick={handleChangePassword}>
+            Cambiar Contraseña
+          </ChangePasswordButton>
+          <PurchaseHistoryButton onClick={viewPurchaseHistory}>
+            Historial de Compras
+          </PurchaseHistoryButton>
 
-      <FormContainer isVisible={showChangePasswordForm}>
-        <h3>Cambiar Contraseña</h3>
-        <form onSubmit={handleSubmitPasswordChange}>
-          <FormLabel>Contraseña Actual:</FormLabel>
-          <FormInput
-            type="text"  // Cambiado a "text" para que sea visible
-            value={currentPassword}
-            onChange={(e) => setCurrentPassword(e.target.value)}
-            required
-          />
+          <FormContainer isVisible={showChangePasswordForm}>
+            <h3>Cambiar Contraseña</h3>
+            <form onSubmit={handleSubmitPasswordChange}>
+              <FormLabel>Contraseña Actual:</FormLabel>
+              <FormInput
+                type="text"  // Cambiado a "text" para que sea visible
+                value={currentPassword}
+                onChange={(e) => setCurrentPassword(e.target.value)}
+                required
+              />
 
-          <FormLabel>Nueva Contraseña:</FormLabel>
-          <FormInput
-            type="text"  // Cambiado a "text" para que sea visible
-            value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
-            required
-          />
+              <FormLabel>Nueva Contraseña:</FormLabel>
+              <FormInput
+                type="text"  // Cambiado a "text" para que sea visible
+                value={newPassword}
+                onChange={(e) => setNewPassword(e.target.value)}
+                required
+              />
 
-          <FormButton type="submit">Cambiar Contraseña</FormButton>
-        </form>
-      </FormContainer>
+              <FormButton type="submit">Cambiar Contraseña</FormButton>
+            </form>
+          </FormContainer>
 
-      {showPurchaseHistory && purchaseHistory.length > 0 && (
-        <Table isVisible={true}>
-          <thead>
-            <tr>
-              <TableHeader>Tipo de Evento</TableHeader>
-              <TableHeader>Nombre Evento</TableHeader>
-              <TableHeader>Sector</TableHeader>
-              <TableHeader>Cantidad Ocupados</TableHeader>
-              <TableHeader>Fecha</TableHeader>
-              <TableHeader>Pago</TableHeader>
-              <TableHeader>Estado</TableHeader>
-            </tr>
-          </thead>
-          <tbody>
-            {purchaseHistory.map((purchase, index) => (
-              <tr key={index}>
-                <TableCell>{purchase.tipoEvento}</TableCell>
-                <TableCell>{purchase.eventName}</TableCell>
-                <TableCell>{purchase.sector}</TableCell>
-                <TableCell>{purchase.occupiedQuantity}</TableCell>
-                <TableCell>{purchase.date}</TableCell>
-                <TableCell>{purchase.payment}</TableCell>
-                <TableCell>{purchase.status}</TableCell>
-              </tr>
-            ))}
-          </tbody>
-        </Table>
+          {showPurchaseHistory && purchaseHistory.length > 0 && (
+            <Table isVisible={true}>
+              <thead>
+                <tr>
+                  <TableHeader>Tipo de Evento</TableHeader>
+                  <TableHeader>Nombre Evento</TableHeader>
+                  <TableHeader>Sector</TableHeader>
+                  <TableHeader>Cantidad Ocupados</TableHeader>
+                  <TableHeader>Fecha</TableHeader>
+                  <TableHeader>Pago</TableHeader>
+                  <TableHeader>Estado</TableHeader>
+                </tr>
+              </thead>
+              <tbody>
+                {purchaseHistory.map((purchase, index) => (
+                  <tr key={index}>
+                    <TableCell>{purchase.tipoEvento}</TableCell>
+                    <TableCell>{purchase.eventName}</TableCell>
+                    <TableCell>{purchase.sector}</TableCell>
+                    <TableCell>{purchase.occupiedQuantity}</TableCell>
+                    <TableCell>{purchase.date}</TableCell>
+                    <TableCell>{purchase.payment}</TableCell>
+                    <TableCell>{purchase.status}</TableCell>
+                  </tr>
+                ))}
+              </tbody>
+            </Table>
+          )}
+        </>
       )}
     </UserDataContainer>
   );
