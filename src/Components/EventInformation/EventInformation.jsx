@@ -103,7 +103,7 @@ const sectores = [
   }
 ];
 
-export default function EventInfoCard({ codigoEvento, tipoEvento, nombreEvento, fechaEvento, hora, descripcionEvento, imgURL }) {
+export default function EventInfoCard({ codigoEvento, tipo, nombre, fecha, hora, descripcion, imgURL }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
