@@ -15,9 +15,13 @@ const Registrar = () => {
 
     const handleInputChange = (e) => {
         const { name, value } = e.target;
+
+        // Convierte el valor de formData.carnet a un número entero si name es "carnet"
+        const parsedValue = name === 'carnet' ? parseInt(value, 10) : value;
+
         setFormData((prevData) => ({
             ...prevData,
-            [name]: value,
+            [name]: parsedValue,
         }));
     };
 
@@ -32,14 +36,19 @@ const Registrar = () => {
 
     const doRegister = async () => {
         try {
-            const response = await fetch('http://127.0.0.1:5000/api/')
+            const response = await fetch('http://127.0.0.1:5000/api/usuario', {
+                method: "POST",
+                headers: { 'Content-Type': "application/json" },
+                body: JSON.stringify(formData)
+            })
+            const json = await response.json()
         }
         catch (error) {
             console.error(error)
         }
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
 
         // Validar seguridad de la contraseña y que las contraseñas sean iguales
@@ -50,6 +59,7 @@ const Registrar = () => {
             // Puedes enviar el formulario aquí o realizar otras acciones
             console.log('Formulario enviado con éxito');
             console.log(formData)
+            await doRegister()
         } else {
             // Mostrar mensajes de error o realizar otras acciones
             console.error('Contraseña no segura o las contraseñas no coinciden');
@@ -72,7 +82,7 @@ const Registrar = () => {
                         <div className="flex mb-4">
                             <div className="mr-4">
                                 <input
-                                    type="text"
+                                    type="number"
                                     id="carnet"
                                     name="carnet"
                                     placeholder="Carnet de Identidad"
