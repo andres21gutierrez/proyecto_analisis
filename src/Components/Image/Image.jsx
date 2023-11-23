@@ -12,7 +12,7 @@ const ImageContainer = styled.div`
   padding: 10px;
 `;
 
-const Image = styled.img`
+const Imagen = styled.img`
   width: 100px;
   height: 100px;
   border-radius: 50%;
@@ -28,7 +28,7 @@ export default function Image({ data, onImageClick }) {
   return (
     <ImageContainer>
       {data.map((userData, index) => (
-        <Image
+        <Imagen
           key={index}
           src={userData.imagenUrl}
           alt={`Imagen de ${userData.nombre}`}

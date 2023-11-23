@@ -48,7 +48,7 @@ const BgDiv = styled.div`
         top: 0;
         right: 0;
         width: 100%;
-        height: 70%;
+        height: 100%;
         z-index: -1;
     }
 `
@@ -96,7 +96,7 @@ a{
     position: fixed;
     margin-left: auto;
     margin-right: auto;
-    top: 15%;
+    top: 27%;
     left: 2.5rem;
     right: 0;
     text-align: center;
