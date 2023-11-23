@@ -131,9 +131,6 @@ export default function EventInfoCard({ codigoEvento, tipo, nombre, fecha, hora,
         <InfoField>
           <strong>Hora:</strong> {hora}
         </InfoField>
-        <InfoField>
-          <strong>Descripción:</strong> {descripcion}
-        </InfoField>
 
         <div className="w-full flex justify-center text-white">
           <button
