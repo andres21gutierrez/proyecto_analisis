@@ -15,7 +15,7 @@ const GlobalStyle = createGlobalStyle`
 const Container = styled.div`
   display: flex;
   flex-direction: column;
-  height: 80vh;
+  height: 70vh;
 `;
 
 const ImageContainer = styled.div`
@@ -42,44 +42,34 @@ const ContentContainer = styled.div`
 
 const data = [
   {
-    nombre: "Juan",
-    apellido: "Pérez",
-    codigo: "123456",
-    descripcion: "Lorem ipsum dolor sit amet, consectetur adipiscing elit.",
-    imagenUrl: "https://i.ibb.co/pjDxYzw/imagen-2023-11-12-144522357.png",
-    celular: "123-456-7890",
-    correo: "juan@example.com",
-    direccion: "Calle 123, Ciudad"
+    nombre: "Ingridh",
+    apellido: "Coaquira",
+    codigo: "C9701-2",
+    rol: "Desarrolladora Front-End, Diseñadora de Interfaces",
+    imagenUrl: "https://i.ibb.co/M2zz1dy/ingrid.jpg"
     
   },
   {
-    nombre: "María",
-    apellido: "Gómez",
-    codigo: "789012",
-    descripcion: "Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas.",
-    imagenUrl: "https://i.ibb.co/5hHg3xR/imagen-2023-11-12-144706210.png",celular: "123-456-7890",
-    correo: "juan@example.com",
-    direccion: "Calle 123, Ciudad"
+    nombre: "Iojhan",
+    apellido: "Balderrama",
+    codigo: "C9766-7",
+    rol: "Desarrollador Back-End, Desarrollador Front-End, Tester",
+    imagenUrl: "https://i.ibb.co/416B5G2/fabri.jpg"
+
   },
   {
     nombre: "Carlos",
-    apellido: "Rodríguez",
-    codigo: "345678",
-    descripcion: "Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.",
-    imagenUrl: "https://i.ibb.co/LNk31FG/imagen-2023-11-12-144737081.png",
-    celular: "123-456-7890",
-    correo: "juan@example.com",
-    direccion: "Calle 123, Ciudad"
+    apellido: "Ricaldes",
+    codigo: "C9958-9",
+    rol: "Desarrolador Front-End, Tester, Diseñador",
+    imagenUrl: "https://i.ibb.co/Zcs6bCk/sho.jpg"
   },
   {
-    nombre: "Ana",
-    apellido: "López",
-    codigo: "901234",
-    descripcion: "Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat.",
-    imagenUrl: "https://i.ibb.co/ggjyYLV/imagen-2023-11-12-144808447.png",
-    celular: "123-456-7890",
-    correo: "juan@example.com",
-    direccion: "Calle 123, Ciudad"
+    nombre: "Andrés",
+    apellido: "Gutierrez",
+    codigo: "C10182-6",
+    rol: "Diseñador, Desarrollador Front-End, Tester",
+    imagenUrl: "https://i.ibb.co/0yCSTm9/guti.jpg"
   }
 ];
 
@@ -98,6 +88,7 @@ export default function Footer() {
 
   return (
     <>
+    <h2 className="bg-blue-800 text-white p-2">GRUPO DE TRABAJO</h2>
       <GlobalStyle />
       <Container>
         <ImageContainer showImages={showImages}>

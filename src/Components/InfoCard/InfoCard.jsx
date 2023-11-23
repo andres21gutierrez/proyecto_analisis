@@ -15,7 +15,7 @@ const CardContainer = styled.div`
 `;
 
 const CardHeader = styled.div`
-  background-color: #4299e1;
+  background-color: #0c4675;
   color: #ffffff;
   padding: 1rem;
   text-align: center;
@@ -40,7 +40,7 @@ const InfoField = styled.div`
   margin-bottom: 1rem;
 `;
 
-export default function InfoCard({ nombre, apellido, codigo, descripcion, imagenUrl, celular, correo, direccion }) {
+export default function InfoCard({ nombre, apellido, codigo, rol, imagenUrl}) {
   return (
     <CardContainer>
       <CardHeader>Información</CardHeader>
@@ -56,16 +56,7 @@ export default function InfoCard({ nombre, apellido, codigo, descripcion, imagen
           <strong>Código:</strong> {codigo}
         </InfoField>
         <InfoField>
-          <strong>Celular:</strong> {celular}
-        </InfoField>
-        <InfoField>
-          <strong>Correo:</strong> {correo}
-        </InfoField>
-        <InfoField>
-          <strong>Dirección:</strong> {direccion}
-        </InfoField>
-        <InfoField>
-          <strong>Descripción:</strong> {descripcion}
+          <strong>Rol:</strong> {rol}
         </InfoField>
       </CardBody>
     </CardContainer>
