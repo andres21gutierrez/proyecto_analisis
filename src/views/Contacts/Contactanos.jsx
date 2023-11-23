@@ -10,9 +10,9 @@ const ContactForm = () => {
   };
 
   return (
-    <div className="bg-gradient-to-b from-red-700 to-red-800 min-h-screen flex items-center justify-center p-8">
+    <div className="bg-gradient-to-b md:flex-row md:justify-between lg:px-60 from-red-700 to-red-800 min-h-screen flex flex-col items-center justify-center p-8">
       {/* Additional information on the left side */}
-      <div className="mr-12 text-white text-left">
+      <div className=" text-white text-left">
         <div className="mb-8">
           <h2 className="text-xl font-bold mb-2">BOLIVIA</h2>
           <p className={`text-lg ${transparentColor} mb-8`}><strong>Cochabamba</strong></p>
@@ -22,7 +22,7 @@ const ContactForm = () => {
             <li className="mb-4">71446845</li>
             <li className="mb-4">78721085</li>
             <li className="mb-4">60717670</li>
-            <li className="mb-">62668053</li>
+            <li className="mb-4">62668053</li>
           </ul>
           <p className={`text-sm ${transparentColor} mb-4`}><strong>Correo de contacto:</strong><br />ingridhcoaquira@gmail.com</p>
         </div>

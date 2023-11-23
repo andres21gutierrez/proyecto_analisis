@@ -25,6 +25,7 @@ const CardBody = styled.div`
   display: flex;
   flex-direction: column; /* Alinea los elementos en columna en dispositivos móviles */
   padding: 1rem;
+  align-items: center;
   background-color: #f9fafb;  /* Fondo gris claro */
 `;
 
