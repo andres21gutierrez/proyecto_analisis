@@ -26,12 +26,13 @@ const StyledEventImageItem = styled(EventImageItem)`
 `;
 
 export default function EventImage({ data, onEventClick }) {
+  if (data == null) { return <p>Loading</p> }
   return (
     <ImageContainer>
       {data.map((event, index) => (
         <StyledEventImageItem
           key={index}
-          src={event.imagenUrl}
+          src={event.imgURL}
           alt={`Imagen de ${event.nombre}`}
           onClick={() => onEventClick(index)}
         />

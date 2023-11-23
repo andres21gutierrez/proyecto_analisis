@@ -103,7 +103,7 @@ const sectores = [
   }
 ];
 
-export default function EventInfoCard({codigoEvento, tipo, nombre, fecha, hora, descripcion, imagenUrl}) {
+export default function EventInfoCard({ codigoEvento, tipoEvento, nombreEvento, fechaEvento, hora, descripcionEvento, imgURL }) {
   const [modalOpen, setModalOpen] = useState(false);
 
   const openModal = () => {
@@ -118,40 +118,40 @@ export default function EventInfoCard({codigoEvento, tipo, nombre, fecha, hora, 
     <CardContainer>
       <CardHeader>Detalles del Evento</CardHeader>
       <CardBody>
-        {imagenUrl && <Image src={imagenUrl} alt={`Imagen de ${nombre}`} />}
+        {imgURL && <Image src={imgURL} alt={`Imagen de ${nombreEvento}`} />}
         <InfoField>
-          <strong>Tipo de Evento:</strong> {tipo}
+          <strong>Tipo de Evento:</strong> {tipoEvento}
         </InfoField>
         <InfoField>
-          <strong>Nombre del Evento:</strong> {nombre}
+          <strong>Nombre del Evento:</strong> {nombreEvento}
         </InfoField>
         <InfoField>
-          <strong>Fecha:</strong> {fecha}
+          <strong>Fecha:</strong> {fechaEvento}
         </InfoField>
         <InfoField>
           <strong>Hora:</strong> {hora}
         </InfoField>
         <InfoField>
-          <strong>Descripción:</strong> {descripcion}
+          <strong>Descripción:</strong> {descripcionEvento}
         </InfoField>
 
         <div className="w-full flex justify-center text-white">
-        <button
-          onClick={openModal}
-          className="w-[170px] h-5 p-4 bg-blue-700 flex justify-center items-center hover:scale-[1.10]"
-        >
-          VER SECTORES
-        </button>
-      </div>
+          <button
+            onClick={openModal}
+            className="w-[170px] h-5 p-4 bg-blue-700 flex justify-center items-center hover:scale-[1.10]"
+          >
+            VER SECTORES
+          </button>
+        </div>
 
-      {modalOpen && (
-        <ModalBackground>
-          <ModalContent>
-            <Stadium sectores={sectores}/>
-            <button className=" bg-blue-600 p-3 text-white" onClick={closeModal}>Volver</button>
-          </ModalContent>
-        </ModalBackground>
-      )}
+        {modalOpen && (
+          <ModalBackground>
+            <ModalContent>
+              <Stadium sectores={sectores} />
+              <button className=" bg-blue-600 p-3 text-white" onClick={closeModal}>Volver</button>
+            </ModalContent>
+          </ModalBackground>
+        )}
       </CardBody>
     </CardContainer>
   );
