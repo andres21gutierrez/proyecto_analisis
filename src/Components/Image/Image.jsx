@@ -8,7 +8,7 @@ const ImageContainer = styled.div`
   display: flex;
   justify-content: space-around;
   margin-bottom: 20px;
-  background-color: #e53e3e;  /* Fondo rojo */
+  background-color: transparent;  /* Fondo rojo */
   padding: 10px;
 `;
 

@@ -26,7 +26,7 @@ const ImageContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #e53e3e; /* Fondo rojo para el contenedor de imágenes */
+  background-color: transparent; /* Fondo rojo para el contenedor de imágenes */
   z-index: 1; /* Asegura que el contenedor de imágenes esté encima del contenido */
 `;
 
