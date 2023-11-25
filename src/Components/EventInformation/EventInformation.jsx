@@ -144,7 +144,7 @@ export default function EventInfoCard({ codigoEvento, tipo, nombre, fecha, hora,
         {modalOpen && (
           <ModalBackground>
             <ModalContent>
-              <Stadium sectores={sectores} />
+              <Stadium sectores={sectores} codigoEvento={codigoEvento} />
               <button className=" bg-blue-600 p-3 text-white" onClick={closeModal}>Volver</button>
             </ModalContent>
           </ModalBackground>
