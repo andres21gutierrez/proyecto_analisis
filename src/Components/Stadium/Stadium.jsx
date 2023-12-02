@@ -1,11 +1,13 @@
 import { useState, useEffect } from "react";
+import { useJwt } from "react-jwt";
 
 export default function Stadium({ codigoEvento }) {
 
+  // CONSTANTES DE LOS DATOS
   const [selectedSector, setSelectedSector] = useState(null);
   const [seatQuantity, setSeatQuantity] = useState(0);
   const [dataBoleto, setDataBoleto] = useState(null)
-  // const [sectores, setSectores] = useState(null)
+  const [sectores, setSectores] = useState(sectorsitos)
   
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // Agregado
   const [payData, setPayData] = useState({
@@ -13,72 +15,89 @@ export default function Stadium({ codigoEvento }) {
     monto: 0,
     fecha: '',
     metodoPago: ''
-});
+  });
 
-useEffect(() => {
-  generatePayment();
-}, [selectedSector, seatQuantity]);
+  const [boletoData, setBoletoData] = useState({
+    codigoBoleto: '',
+    numeroIngresos: 0,
+    codigoSector: '',
+    codigoEvento: '',
+    codigoPago:'',
+    codigoPago:'',
+    codigoUsuario:''
+  });
 
-useEffect(() => {
-  console.log('Datos actualizados:', payData);
-}, [payData]);
-
-  const handleSectorClick = (sector) => {
-    // console.log(sector);
-    setSelectedSector(sector);
-    // console.log(sector)
-  };
-
-  const isValidless = (cantidad) => {
-    return  cantidad > 0;
-};
-
-  const isValidfull = (cantidad) => {
-    return cantidad <= selectedSector.comprasMaximas;
-  }
-
-  const emptySlot = (cantidad) =>{
-    return cantidad <= (selectedSector.capacidadMaxima - selectedSector.cantidadOcupantes);
-  };
-
-  const calculateAmount = () => {
-    if (selectedSector && selectedSector.precioSector) {
-      return Number(selectedSector.precioSector * seatQuantity);
+  // RECUPERAR COOKIE DE SESION
+  const getCookie = (cookieName) => {
+    const cookies = document.cookie.split(';');
+    const cookie = cookies.find((c) => c.trim().startsWith(cookieName + '='));
+  
+    if (cookie) {
+      return cookie.split('=')[1];
     }
-    return 0; // o alguna acción por defecto si selectedSector o precioSector no están definidos
+  
+    return null;
   };
   
+  // RECUPERA LOS SECTORES
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/sector", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            body: JSON.stringify({ "codigoEvento": `${codigoEvento}` })
+          }
+        })
+        const json = await response.json();
+        console.log(json)
+        setSectores(json)
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData();
+  }, [])
 
-  const generatePayment = () => {
-    setPayData((prevPayData) => ({
-      ...prevPayData,
-      monto: calculateAmount(),
-      fecha: new Date(),
-      metodoPago: selectedPaymentMethod,
-    }), () => {
-      alert(payData.monto); // Alerta después de que se haya actualizado el estado
-    });
-  };
-  
-  const buy = () =>{
-    generatePayment();
-    alert(payData.monto + ' ' + payData.metodoPago)
+  // ALMACENADO DEL PAGO POR EL BOLETO
+  const savePayment = async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/pago', {
+            method: "POST",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify(payData)
+        })
+        const json = await response.json();
+        alert("PAGO EXITOSO")
+        return json.id;
+    }
+    catch (error) {
+        alert("PAGO FALLIDO")
+        console.error(error)
+    }
   }
 
-  const invalidQuantity = () =>{
-    alert('CANTIDAD INVALIDA, SELECCIONE UNA CANTIDAD VALIDA')
-    setSeatQuantity(0);
+  // ALMACENADO DEL BOLETO
+  const saveBoleto = async () => {
+    try {
+        const response = await fetch('http://127.0.0.1:5000/api/pago', {
+            method: "POST",
+            headers: { 'Content-Type': "application/json" },
+            body: JSON.stringify(boletoData)
+        })
+        const json = await response.json();
+        alert("BOLETO REGISTRADO")
+        return json.id;
+    }
+    catch (error) {
+        alert("ALGO SALIO MAL :(")
+        console.error(error)
+    }
   }
 
-  const handleBuySeats = () => {
-    {isValidless(seatQuantity) && emptySlot(seatQuantity) && isValidfull(seatQuantity) ?
-      buy()
-      :
-      invalidQuantity()
-    };
-  }
-
-  const sectores = [
+  const sectorsitos = [
     {
       "codigoSector": "CS1",
       "nombre": "Curva Sur",
@@ -124,37 +143,107 @@ useEffect(() => {
       "comprasMaximas" : 5
     }]
 
-  useEffect(() => {
-    async function fetchData() {
-      try {
-        const response = await fetch("http://127.0.0.1:5000/api/sector", {
-          method: "GET",
-          headers: {
-            "Content-Type": "application/json",
-            body: JSON.stringify({ "codigoEvento": `${codigoEvento}` })
-          }
-        })
-        const json = await response.json();
-        console.log(json)
-        setSectores(json)
-      }
-      catch (error) {
-        console.error(error);
-      }
-    }
-    fetchData()
-    // console.log(data)
-  }, [])
 
-  const getSectorsbyEv = (Ev, jsonSectores) => {
-    let toReturn = [];
-    for (let i = 0; i < jsonSectores.length; i++) {
-      if (jsonSectores[i].codigoEvento === Ev) {
-        toReturn.push(jsonSectores[i]);
-      }
-    }
-    return toReturn;
+
+// ACTUALIZACIONES DE DATOS 
+useEffect(() => {
+  generatePayment();
+}, [selectedSector, seatQuantity]);
+
+useEffect(() => {
+  console.log('Datos actualizados:', payData);
+}, [payData]);
+
+// ACTUALIZAR DATOS DEL BOLETO
+useEffect(() => {
+  console.log('Datos actualizados Boleto:', boletoData);
+}, [boletoData]);
+
+  const handleSectorClick = (sector) => {
+    setSelectedSector(sector);
   };
+
+
+  // VALIDACIONES
+  const isValidless = (cantidad) => {
+    return  cantidad > 0;
+};
+
+  const isValidfull = (cantidad) => {
+    return cantidad <= selectedSector.comprasMaximas;
+  }
+
+  const emptySlot = (cantidad) =>{
+    return cantidad <= (selectedSector.capacidadMaxima - selectedSector.cantidadOcupantes);
+  };
+
+  const calculateAmount = () => {
+    if (selectedSector && selectedSector.precioSector) {
+      return Number(selectedSector.precioSector * seatQuantity);
+    }
+    return 0;
+  };
+  
+  // CALCULOS DEL PAGO
+  const generatePayment = () => {
+    setPayData((prevPayData) => ({
+      ...prevPayData,
+      monto: calculateAmount(),
+      fecha: new Date(),
+      metodoPago: selectedPaymentMethod,
+    }), () => {
+      alert(payData.monto);
+    });
+  };
+  
+  const generateBoleto = (codePay, codeUser) => {
+    setDataBoleto((prevDataBoleto) => ({
+      ...prevDataBoleto,
+      codigoBoleto: '',
+      numeroIngresos: seatQuantity,
+      codigoSector: selectedSector.codigoSector,
+      codigoEvento: props.codigoEvento,
+      codigoPago: codePay,
+      codigoUsuario: codeUser
+    }), () => {
+      alert(payData.monto);
+    });
+  }
+
+  const findUser = () =>{
+    const Usercookie = getCookie('sesion'); 
+    return Usercookie;
+  }
+
+  const buy = () =>{
+    generatePayment();
+    const codePay = savePayment();
+    const codeUser = findUser();
+    generateBoleto(codePay, codeUser);
+  }
+
+  const invalidQuantity = () =>{
+    alert('CANTIDAD INVALIDA, SELECCIONE UNA CANTIDAD VALIDA')
+    setSeatQuantity(0);
+  }
+
+  const handleBuySeats = () => {
+    {isValidless(seatQuantity) && emptySlot(seatQuantity) && isValidfull(seatQuantity) ?
+      buy()
+      :
+      invalidQuantity()
+    };
+  }
+
+  // const getSectorsbyEv = (Ev, jsonSectores) => {
+  //   let toReturn = [];
+  //   for (let i = 0; i < jsonSectores.length; i++) {
+  //     if (jsonSectores[i].codigoEvento === Ev) {
+  //       toReturn.push(jsonSectores[i]);
+  //     }
+  //   }
+  //   return toReturn;
+  // };
 
 
   return (
