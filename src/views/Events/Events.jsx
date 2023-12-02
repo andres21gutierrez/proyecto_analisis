@@ -121,7 +121,7 @@ const eventData = [
 
 
 export default function Events() {
-  const [data, setData] = useState(null);
+  const [data, setData] = useState(eventData);
   const [selectedEventIndex, setSelectedEventIndex] = useState(null);
   const [showEvents, setShowEvents] = useState(false);
 
@@ -165,7 +165,6 @@ export default function Events() {
             <ContentWrapper>
               {console.log(data)}
               <EventInfoCard {...data[selectedEventIndex]} />
-              {/* Agrega aquí la lógica para la compra de boletos si es necesario */}
             </ContentWrapper>
           )}
         </ContentContainer>

@@ -1,21 +1,79 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Stadium(props){
 
   const [selectedSector, setSelectedSector] = useState(null);
   const [seatQuantity, setSeatQuantity] = useState(0);
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // Agregado
+  const [payData, setPayData] = useState({
+    codigoPago: '',
+    monto: 0,
+    fecha: '',
+    metodoPago: ''
+});
+
+
+useEffect(() => {
+  generatePayment();
+}, [selectedSector, seatQuantity]);
+
+useEffect(() => {
+  console.log('Datos actualizados:', payData);
+}, [payData]);
 
   const handleSectorClick = (sector) => {
     console.log(sector);
     setSelectedSector(sector);
   };
 
-  const handleBuySeats = () => {
-    // Implementa la lógica para comprar los asientos aquí
-    console.log(`Comprando ${seatQuantity} asientos en el sector ${selectedSector.nombre}`);
+  const isValidless = (cantidad) => {
+    return  cantidad > 0;
+};
+
+  const isValidfull = (cantidad) => {
+    return cantidad <= selectedSector.comprasMaximas;
+  }
+
+  const emptySlot = (cantidad) =>{
+    return cantidad <= (selectedSector.capacidadMaxima - selectedSector.cantidadOcupantes);
   };
 
+  const calculateAmount = () => {
+    if (selectedSector && selectedSector.precioSector) {
+      return Number(selectedSector.precioSector * seatQuantity);
+    }
+    return 0; // o alguna acción por defecto si selectedSector o precioSector no están definidos
+  };
+  
+
+  const generatePayment = () => {
+    setPayData((prevPayData) => ({
+      ...prevPayData,
+      monto: calculateAmount(),
+      fecha: new Date(),
+      metodoPago: selectedPaymentMethod,
+    }), () => {
+      alert(payData.monto); // Alerta después de que se haya actualizado el estado
+    });
+  };
+  
+  const buy = () =>{
+    generatePayment();
+    alert(payData.monto + ' ' + payData.metodoPago)
+  }
+
+  const invalidQuantity = () =>{
+    alert('CANTIDAD INVALIDA, SELECCIONE UNA CANTIDAD VALIDA')
+    setSeatQuantity(0);
+  }
+
+  const handleBuySeats = () => {
+    {isValidless(seatQuantity) && emptySlot(seatQuantity) && isValidfull(seatQuantity) ?
+      buy()
+      :
+      invalidQuantity()
+    };
+  }
 
   const sectores = [
     {
@@ -23,40 +81,44 @@ export default function Stadium(props){
       "nombre": "Curva Sur",
       "capacidadMaxima": 1000,
       "cantidadOcupantes": 500,
-      "precioSector": 20.0,
+      "precioSector": 20,
       "codigoEvento": "EVT1",
       "habilitado": true,
-      "posicionDefecto": "curvaSur"
+      "posicionDefecto": "curvaSur",
+      "comprasMaximas" : 5
     },
     {
       "codigoSector": "CN1",
       "nombre": "Curva Norte",
       "capacidadMaxima": 1200,
       "cantidadOcupantes": 600,
-      "precioSector": 25.0,
+      "precioSector": 25,
       "codigoEvento": "EVT1",
       "habilitado": true,
-      "posicionDefecto": "curvaNorte"
+      "posicionDefecto": "curvaNorte",
+      "comprasMaximas" : 5
     },
     {
       "codigoSector": "PR1",
       "nombre": "Preferencial",
       "capacidadMaxima": 500,
       "cantidadOcupantes": 200,
-      "precioSector": 50.0,
+      "precioSector": 50,
       "codigoEvento": "EVT1",
       "habilitado": true,
-      "posicionDefecto": "preferencial"
+      "posicionDefecto": "preferencial",
+      "comprasMaximas" : 5
     },
     {
       "codigoSector": "GN1",
       "nombre": "General",
       "capacidadMaxima": 1500,
       "cantidadOcupantes": 800,
-      "precioSector": 15.0,
+      "precioSector": 15,
       "codigoEvento": "EVT1",
       "habilitado": true,
-      "posicionDefecto": "general"
+      "posicionDefecto": "general",
+      "comprasMaximas" : 5
     }
   ]
 
@@ -78,7 +140,7 @@ export default function Stadium(props){
               seatQuantity={seatQuantity}
               handleBuySeats={handleBuySeats}
               setSeatQuantity={setSeatQuantity}
-              selectedPaymentMethod={selectedPaymentMethod} // Agregado
+              selectedPaymentMethod={selectedPaymentMethod}
               setSelectedPaymentMethod={setSelectedPaymentMethod}
               />
            </div>
@@ -102,12 +164,14 @@ const TableInfo = ({ selectedSector, seatQuantity, handleBuySeats, setSeatQuanti
           <tr>
             <th className="md:p-2 text-sm text-white">CANTIDAD DE ESPACIOS DISPONIBLES</th>
             <th className="md:p-2 text-sm text-white">PRECIO POR INGRESO</th>
+            <th className="md:p-2 text-sm text-white">COMPRAS MAXIMAS</th>
           </tr>
         </thead>
         <tbody>
           <tr>
             <td className="p-2 text-white">{selectedSector.capacidadMaxima - selectedSector.cantidadOcupantes}</td>
-            <td className=" text-white">${selectedSector.precioSector}</td>
+            <td className=" text-white">{selectedSector.precioSector} Bs</td>
+            <td className="text-white">{selectedSector.comprasMaximas}</td>
           </tr>
         </tbody>
       </table>
@@ -167,7 +231,7 @@ const Cesped = () => {
     return(
         <button onClick={() => props.handle(props.element)} disabled={props.disp === true} className={`md:w-[512px] w-[230px] mx-auto ${ props.disp === true ? `opacity-25` : ``}`}>
             <div className="max-w-lg mb-4">
-                <div className="md:h-20 h-10 border-2 text-white font-bold border-white overflow-hidden flex items-center justify-center">
+                <div className="md:h-20 h-10 border-2 text-white font-bold border-white overflow-hidden hover:text-lg flex items-center justify-center">
                     GENERAL
                 </div>
             </div>
@@ -177,9 +241,9 @@ const Cesped = () => {
 
 const Preferencial = (props)=>{
     return(
-        <button onClick={() => props.handle(props.element)}  className={`md:w-[512px] w-[230px] mx-auto ${ props.disp == true ? `opacity-25` : ``}`} disabled={props.disp === true}>
+        <button onClick={() => props.handle(props.element)}  className={`md:w-[512px]  w-[230px] mx-auto ${ props.disp == true ? `opacity-25` : ``}`} disabled={props.disp === true}>
             <div className="max-w-lg mt-4">
-                <div className={"md:h-20 h-10 border-2 font-bold text-white border-white overflow-hidden flex items-center justify-center"}>
+                <div className={"md:h-20 h-10 border-2 hover:text-lg font-bold text-white border-white overflow-hidden flex items-center justify-center"}>
                     PREFERENCIAL
                 </div>
             </div>
@@ -189,15 +253,15 @@ const Preferencial = (props)=>{
 
 const CurvaSur = (props)=>{
     return(
-        <button onClick={() => props.handle(props.element)}  disabled={props.disp === true} className={`md:h-[510px] font-bold h-[290px] rounded-l-full md:w-[100px] w-[50px] border-2 text-white border-white flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
-          <span className="transform md:-rotate-0 -rotate-90">SUR</span>
+        <button onClick={() => props.handle(props.element)}  disabled={props.disp === true} className={`md:h-[510px] hover:text-lg font-bold h-[290px] rounded-l-full md:w-[100px] w-[50px] border-2 text-white border-white flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
+          <span className="transform hover:text-lg md:-rotate-0 -rotate-90">SUR</span>
         </button>
     )
 }
 
 const CurvaNorte = (props)=>{
     return(
-        <button onClick={() => props.handle(props.element)}  disabled={props.disp === true} className={`md:h-[510px] font-bold h-[290px] rounded-r-full md:w-[100px] w-[50px]  border-2 border-white text-white flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
+        <button onClick={() => props.handle(props.element)}  disabled={props.disp === true} className={`md:h-[510px] hover:text-lg font-bold h-[290px] rounded-r-full md:w-[100px] w-[50px]  border-2 border-white text-white flex items-center justify-center ${props.disp == true ? `opacity-25` : ``}`}>
             <span className="transform md:-rotate-0 -rotate-90">NORTE</span>
         </button>
     )

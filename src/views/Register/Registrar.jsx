@@ -42,8 +42,10 @@ const Registrar = () => {
                 body: JSON.stringify(formData)
             })
             const json = await response.json()
+            alert("USUARIO REGISTRADO")
         }
         catch (error) {
+            alert("VERIFIQUE LOS DATOS")
             console.error(error)
         }
     }
