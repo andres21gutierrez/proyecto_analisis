@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 export default function Stadium({ codigoEvento }) {
 
@@ -7,12 +7,35 @@ export default function Stadium({ codigoEvento }) {
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // Agregado
   const [dataBoleto, setDataBoleto] = useState(null)
   const [dataPago, setDataPago] = useState(null)
+  const [sectores, setSectores] = useState(null)
 
   const handleSectorClick = (sector) => {
     // console.log(sector);
     setSelectedSector(sector);
     // console.log(sector)
   };
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/sector", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            body: JSON.stringify({ "codigoEvento": `${codigoEvento}` })
+          }
+        })
+        const json = await response.json();
+        console.log(json)
+        setSectores(json)
+      }
+      catch (error) {
+        console.error(error);
+      }
+    }
+    fetchData()
+    // console.log(data)
+  }, [])
 
   const handleBuySeats = () => {
     console.log(selectedSector)
@@ -21,61 +44,26 @@ export default function Stadium({ codigoEvento }) {
     console.log(`Comprando ${seatQuantity} asientos en el sector ${selectedSector.nombre}`);
   };
 
-
-  const sectores = [
-    {
-      "codigoSector": "CS1",
-      "nombre": "Curva Sur",
-      "capacidadMaxima": 1000,
-      "cantidadOcupantes": 500,
-      "precioSector": 20.0,
-      "codigoEvento": "EVT1",
-      "habilitado": true,
-      "posicionDefecto": "curvaSur"
-    },
-    {
-      "codigoSector": "CN1",
-      "nombre": "Curva Norte",
-      "capacidadMaxima": 1200,
-      "cantidadOcupantes": 600,
-      "precioSector": 25.0,
-      "codigoEvento": "EVT1",
-      "habilitado": true,
-      "posicionDefecto": "curvaNorte"
-    },
-    {
-      "codigoSector": "PR1",
-      "nombre": "Preferencial",
-      "capacidadMaxima": 500,
-      "cantidadOcupantes": 200,
-      "precioSector": 50.0,
-      "codigoEvento": "EVT1",
-      "habilitado": true,
-      "posicionDefecto": "preferencial"
-    },
-    {
-      "codigoSector": "GN1",
-      "nombre": "General",
-      "capacidadMaxima": 1500,
-      "cantidadOcupantes": 800,
-      "precioSector": 15.0,
-      "codigoEvento": "EVT1",
-      "habilitado": true,
-      "posicionDefecto": "general"
+  const getSectorsbyEv = (Ev, jsonSectores) => {
+    let toReturn = [];
+    for (let i = 0; i < jsonSectores.length; i++) {
+      if (jsonSectores[i].codigoEvento === Ev) {
+        toReturn.push(jsonSectores[i]);
+      }
     }
-  ]
-
+    return toReturn;
+  };
 
   return (
     <div className="flex flex-col items-center bg-red-500 lg:flex-row py-5 justify-center">
       <div className="flex">
-        {sectores.find(sector => sector.posicionDefecto === "curvaSur").habilitado === true ? <CurvaSur element={sectores.find(sector => sector.posicionDefecto === "curvaSur")} handle={handleSectorClick} /> : <CurvaSur disp={true} />}
+        {sectores && sectores.find(sector => sector.posicionDefecto === "curvaSur").habilitado === true ? <CurvaSur element={sectores.find(sector => sector.posicionDefecto === "curvaSur")} handle={handleSectorClick} /> : <CurvaSur disp={true} />}
         <div className="px-2">
-          {sectores.find(sector => sector.posicionDefecto === "general").habilitado === true ? <General element={sectores.find(sector => sector.posicionDefecto === "general")} handle={handleSectorClick} /> : <General disp={true} />}
+          {sectores && sectores.find(sector => sector.posicionDefecto === "general").habilitado === true ? <General element={sectores.find(sector => sector.posicionDefecto === "general")} handle={handleSectorClick} /> : <General disp={true} />}
           <Cesped></Cesped>
-          {sectores.find(sector => sector.posicionDefecto === "preferencial").habilitado === true ? <Preferencial element={sectores.find(sector => sector.posicionDefecto === "preferencial")} handle={handleSectorClick} /> : <Preferencial disp={true} />}
+          {sectores && sectores.find(sector => sector.posicionDefecto === "preferencial").habilitado === true ? <Preferencial element={sectores.find(sector => sector.posicionDefecto === "preferencial")} handle={handleSectorClick} /> : <Preferencial disp={true} />}
         </div>
-        {sectores.find(sector => sector.posicionDefecto === "curvaNorte").habilitado === true ? <CurvaNorte element={sectores.find(sector => sector.posicionDefecto === "curvaNorte")} handle={handleSectorClick} /> : <CurvaNorte disp={true} />}
+        {sectores && sectores.find(sector => sector.posicionDefecto === "curvaNorte").habilitado === true ? <CurvaNorte element={sectores.find(sector => sector.posicionDefecto === "curvaNorte")} handle={handleSectorClick} /> : <CurvaNorte disp={true} />}
       </div>
       <div className=" lg:ml-4">
         <TableInfo

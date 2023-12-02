@@ -128,7 +128,7 @@ export default function Events() {
   useEffect(() => {
     async function fetchData() {
       try {
-        const response = await fetch("http://146.190.214.220:5000/api/evento")
+        const response = await fetch("http://127.0.0.1:5000/api/evento")
         const json = await response.json();
         // console.log(json)
         setData(json)
