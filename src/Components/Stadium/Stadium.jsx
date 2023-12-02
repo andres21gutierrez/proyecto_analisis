@@ -1,9 +1,12 @@
 import { useState, useEffect } from "react";
 
-export default function Stadium(props){
+export default function Stadium({ codigoEvento }) {
 
   const [selectedSector, setSelectedSector] = useState(null);
   const [seatQuantity, setSeatQuantity] = useState(0);
+  const [dataBoleto, setDataBoleto] = useState(null)
+  // const [sectores, setSectores] = useState(null)
+  
   const [selectedPaymentMethod, setSelectedPaymentMethod] = useState(""); // Agregado
   const [payData, setPayData] = useState({
     codigoPago: '',
@@ -11,7 +14,6 @@ export default function Stadium(props){
     fecha: '',
     metodoPago: ''
 });
-
 
 useEffect(() => {
   generatePayment();
@@ -22,8 +24,9 @@ useEffect(() => {
 }, [payData]);
 
   const handleSectorClick = (sector) => {
-    console.log(sector);
+    // console.log(sector);
     setSelectedSector(sector);
+    // console.log(sector)
   };
 
   const isValidless = (cantidad) => {
@@ -119,33 +122,64 @@ useEffect(() => {
       "habilitado": true,
       "posicionDefecto": "general",
       "comprasMaximas" : 5
+    }]
+
+  useEffect(() => {
+    async function fetchData() {
+      try {
+        const response = await fetch("http://127.0.0.1:5000/api/sector", {
+          method: "GET",
+          headers: {
+            "Content-Type": "application/json",
+            body: JSON.stringify({ "codigoEvento": `${codigoEvento}` })
+          }
+        })
+        const json = await response.json();
+        console.log(json)
+        setSectores(json)
+      }
+      catch (error) {
+        console.error(error);
+      }
     }
-  ]
+    fetchData()
+    // console.log(data)
+  }, [])
+
+  const getSectorsbyEv = (Ev, jsonSectores) => {
+    let toReturn = [];
+    for (let i = 0; i < jsonSectores.length; i++) {
+      if (jsonSectores[i].codigoEvento === Ev) {
+        toReturn.push(jsonSectores[i]);
+      }
+    }
+    return toReturn;
+  };
 
 
-    return(
-        <div className="flex flex-col items-center bg-red-500 lg:flex-row py-5 justify-center">
-            <div className="flex">
-                {sectores.find(sector => sector.posicionDefecto === "curvaSur").habilitado === true ? <CurvaSur element={sectores.find(sector => sector.posicionDefecto === "curvaSur")} handle={handleSectorClick}/> : <CurvaSur disp={true}/>}
-                <div className="px-2">
-                  {sectores.find(sector => sector.posicionDefecto === "general").habilitado === true ? <General element={sectores.find(sector => sector.posicionDefecto === "general")} handle={handleSectorClick}/> :  <General disp={true}/>}
-                  <Cesped></Cesped>
-                  {sectores.find(sector => sector.posicionDefecto === "preferencial").habilitado === true ? <Preferencial element={sectores.find(sector => sector.posicionDefecto === "preferencial")} handle={handleSectorClick}/> : <Preferencial disp={true}/>}
-                </div>
-                {sectores.find(sector => sector.posicionDefecto === "curvaNorte").habilitado === true ? <CurvaNorte element={sectores.find(sector => sector.posicionDefecto === "curvaNorte")} handle={handleSectorClick}/> : <CurvaNorte disp={true}/>}
-            </div>  
-           <div className=" lg:ml-4">
-            <TableInfo
-              selectedSector={selectedSector}
-              seatQuantity={seatQuantity}
-              handleBuySeats={handleBuySeats}
-              setSeatQuantity={setSeatQuantity}
-              selectedPaymentMethod={selectedPaymentMethod}
-              setSelectedPaymentMethod={setSelectedPaymentMethod}
-              />
-           </div>
+  return (
+    <div className="flex flex-col items-center bg-red-500 lg:flex-row py-5 justify-center">
+      <div className="flex">
+        {sectores && sectores.find(sector => sector.posicionDefecto === "curvaSur").habilitado === true ? <CurvaSur element={sectores.find(sector => sector.posicionDefecto === "curvaSur")} handle={handleSectorClick} /> : <CurvaSur disp={true} />}
+        <div className="px-2">
+          {sectores && sectores.find(sector => sector.posicionDefecto === "general").habilitado === true ? <General element={sectores.find(sector => sector.posicionDefecto === "general")} handle={handleSectorClick} /> : <General disp={true} />}
+          <Cesped></Cesped>
+          {sectores && sectores.find(sector => sector.posicionDefecto === "preferencial").habilitado === true ? <Preferencial element={sectores.find(sector => sector.posicionDefecto === "preferencial")} handle={handleSectorClick} /> : <Preferencial disp={true} />}
         </div>
-    );
+        {sectores && sectores.find(sector => sector.posicionDefecto === "curvaNorte").habilitado === true ? <CurvaNorte element={sectores.find(sector => sector.posicionDefecto === "curvaNorte")} handle={handleSectorClick} /> : <CurvaNorte disp={true} />}
+      </div>
+      <div className=" lg:ml-4">
+        <TableInfo
+          selectedSector={selectedSector}
+          seatQuantity={seatQuantity}
+          handleBuySeats={handleBuySeats}
+          setSeatQuantity={setSeatQuantity}
+          selectedPaymentMethod={selectedPaymentMethod} // Agregado
+          setSelectedPaymentMethod={setSelectedPaymentMethod}
+        />
+      </div>
+    </div>
+  );
 }
 
 const TableInfo = ({ selectedSector, seatQuantity, handleBuySeats, setSeatQuantity, selectedPaymentMethod, setSelectedPaymentMethod }) => {
@@ -208,24 +242,24 @@ const TableInfo = ({ selectedSector, seatQuantity, handleBuySeats, setSeatQuanti
 
 // CENTRO DEL STADIUM
 const Cesped = () => {
-    return (
-      <div className="relative md:w-[512px] w-[240px] mx-auto px-2">
-        <div className="rounded-lg max-w-lg bg-green-500 p-4">
-          <div className="relative md:h-72 h-[150px] bg-green-500 rounded-lg overflow-hidden">
-            <div className="absolute bottom-1/4 right-0 translate-x-1/2 transform border-[3px] border-white w-1/4 h-1/2" />
-            <div className="absolute bottom-1/4 left-0 -translate-x-1/2 transform border-[3px]  border-white w-1/4 h-1/2" />
-            <div className="absolute h-[3px] w-full bg-white"></div>
-            <div className="absolute h-[3px] w-full bottom-0 bg-white"></div>
-            <div className="absolute h-full w-[3px] bg-white"></div>
-            <div className="absolute h-full w-[3px] right-0 bg-white"></div>
-            <div className="absolute h-full w-[3px] right-1/2 bg-white"></div>
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white w-2 h-2 rounded-full" />
-            <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-[3px] border-white md:w-16 md:h-16 w-10 h-10 rounded-full" />
-          </div>
+  return (
+    <div className="relative md:w-[512px] w-[240px] mx-auto px-2">
+      <div className="rounded-lg max-w-lg bg-green-500 p-4">
+        <div className="relative md:h-72 h-[150px] bg-green-500 rounded-lg overflow-hidden">
+          <div className="absolute bottom-1/4 right-0 translate-x-1/2 transform border-[3px] border-white w-1/4 h-1/2" />
+          <div className="absolute bottom-1/4 left-0 -translate-x-1/2 transform border-[3px]  border-white w-1/4 h-1/2" />
+          <div className="absolute h-[3px] w-full bg-white"></div>
+          <div className="absolute h-[3px] w-full bottom-0 bg-white"></div>
+          <div className="absolute h-full w-[3px] bg-white"></div>
+          <div className="absolute h-full w-[3px] right-0 bg-white"></div>
+          <div className="absolute h-full w-[3px] right-1/2 bg-white"></div>
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 bg-white w-2 h-2 rounded-full" />
+          <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 border-[3px] border-white md:w-16 md:h-16 w-10 h-10 rounded-full" />
         </div>
       </div>
-    );
-  };
+    </div>
+  );
+};
 
   const General = (props)=>{
     return(

@@ -126,7 +126,7 @@ const ProfileData = () => {
         const carnet = decodedToken.carnet;
 
         // Construir la URL con el carnet
-        const url = `http://146.190.214.220:5000/api/usuario/${carnet}`;
+        const url = `http://127.0.0.1:5000/api/usuario/${carnet}`;
 
         // Realizar la solicitud al backend
         const response = await fetch(url);
